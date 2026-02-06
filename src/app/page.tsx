@@ -1,11 +1,9 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
-import { useState, useEffect } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function GatePage() {
+function GateInner() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +28,7 @@ export default function GatePage() {
       if (res.ok) {
         // Success - redirect to the intended destination
         router.push(next);
+        router.refresh();
       } else {
         // Failed - show error
         setError(true);
@@ -140,5 +139,13 @@ export default function GatePage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function GatePage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 24 }}>Loading...</div>}>
+      <GateInner />
+    </Suspense>
   );
 }
