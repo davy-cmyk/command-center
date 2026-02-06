@@ -1,81 +1,74 @@
-import { Suspense } from 'react';
-import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
-import { checkCommandAuth, getKeyStatus } from '@/src/lib/command/auth';
-import { SettingsCard } from './components/SettingsCard';
+import { LogoutButton } from '@/src/components/command/LogoutButton';
 
-interface PageProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
+// Color palette
+const COLORS = {
+  black: '#020204',
+  darkBg: '#1B1922',
+  cardBg: '#373033',
+  border: '#4F3D3D',
+  accent: '#E86942',
+  text: '#ECD7C3',
+};
 
-async function SettingsContent({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const key = params.key;
-  
-  const headersList = await headers();
-  const headerKey = headersList.get('x-command-key');
-  
-  const auth = checkCommandAuth(key, headerKey || undefined);
-  
-  if (!auth.authorized) {
-    redirect('/404');
-  }
-
-  const keyStatus = getKeyStatus();
-
-  const settings = [
-    {
-      name: 'NODE_ENV',
-      value: process.env.NODE_ENV || 'unknown',
-      description: 'Current environment mode',
-    },
-    {
-      name: 'COMMAND_CENTER_KEY',
-      value: keyStatus.configured ? `Configured (${keyStatus.hint})` : 'Not set',
-      description: 'Access key for command center',
-      status: keyStatus.configured ? ('success' as const) : ('error' as const),
-    },
-    {
-      name: 'DEBUG_ALLOWED',
-      value: process.env.DEBUG_ALLOWED || 'false',
-      description: 'Debug mode enabled',
-    },
-    {
-      name: 'CONTRACT_STRICT_MODE',
-      value: process.env.CONTRACT_STRICT_MODE || 'false',
-      description: 'Contract validation strict mode',
-    },
-    {
-      name: 'CANONICAL_CONTRACT_VERSION',
-      value: process.env.CANONICAL_CONTRACT_VERSION || 'not set',
-      description: 'Contract version',
-    },
-  ];
-
+export default function SettingsPage() {
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Settings</h2>
-      </div>
-      <div className="grid gap-4">
-        {settings.map((setting) => (
-          <SettingsCard
-            key={setting.name}
-            name={setting.name}
-            value={setting.value}
-            description={setting.description}
-            status={setting.status}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
+    <>
+      <LogoutButton />
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: `linear-gradient(135deg, ${COLORS.black} 0%, ${COLORS.darkBg} 100%)`,
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: COLORS.cardBg,
+            border: `1px solid ${COLORS.border}`,
+            borderRadius: 12,
+            padding: '3rem',
+            textAlign: 'center',
+            maxWidth: '400px',
+          }}
+        >
+          <h1
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 600,
+              color: COLORS.text,
+              marginBottom: '0.5rem',
+              letterSpacing: '0.025em',
+            }}
+          >
+            Command Center
+          </h1>
 
-export default function SettingsPage(props: PageProps) {
-  return (
-    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
-      <SettingsContent {...props} />
-    </Suspense>
+          <p
+            style={{
+              fontSize: '1.125rem',
+              color: COLORS.accent,
+              fontWeight: 500,
+              marginBottom: '1rem',
+            }}
+          >
+            Settings
+          </p>
+
+          <p
+            style={{
+              fontSize: '0.875rem',
+              color: COLORS.text,
+              opacity: 0.7,
+            }}
+          >
+            Placeholder page – wired correctly
+          </p>
+        </div>
+      </div>
+    </>
   );
 }

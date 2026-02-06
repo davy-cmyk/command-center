@@ -1,44 +1,74 @@
-import { Suspense } from 'react';
-import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
-import { checkCommandAuth } from '@/src/lib/command/auth';
-import { getEvents } from '@/src/lib/command/events';
-import { ReportsTable } from './components/ReportsTable';
+import { LogoutButton } from '@/src/components/command/LogoutButton';
 
-interface PageProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
+// Color palette
+const COLORS = {
+  black: '#020204',
+  darkBg: '#1B1922',
+  cardBg: '#373033',
+  border: '#4F3D3D',
+  accent: '#E86942',
+  text: '#ECD7C3',
+};
 
-async function ReportsContent({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const key = params.key;
-  
-  const headersList = await headers();
-  const headerKey = headersList.get('x-command-key');
-  
-  const auth = checkCommandAuth(key, headerKey || undefined);
-  
-  if (!auth.authorized) {
-    redirect('/404');
-  }
-
-  const events = getEvents(50);
-
+export default function ReportsPage() {
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Recent Reports</h2>
-        <span className="text-sm text-gray-500">Last 50 events</span>
+    <>
+      <LogoutButton />
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: `linear-gradient(135deg, ${COLORS.black} 0%, ${COLORS.darkBg} 100%)`,
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: COLORS.cardBg,
+            border: `1px solid ${COLORS.border}`,
+            borderRadius: 12,
+            padding: '3rem',
+            textAlign: 'center',
+            maxWidth: '400px',
+          }}
+        >
+          <h1
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 600,
+              color: COLORS.text,
+              marginBottom: '0.5rem',
+              letterSpacing: '0.025em',
+            }}
+          >
+            Command Center
+          </h1>
+
+          <p
+            style={{
+              fontSize: '1.125rem',
+              color: COLORS.accent,
+              fontWeight: 500,
+              marginBottom: '1rem',
+            }}
+          >
+            Reports
+          </p>
+
+          <p
+            style={{
+              fontSize: '0.875rem',
+              color: COLORS.text,
+              opacity: 0.7,
+            }}
+          >
+            Placeholder page – wired correctly
+          </p>
+        </div>
       </div>
-      <ReportsTable events={events} />
-    </div>
-  );
-}
-
-export default function ReportsPage(props: PageProps) {
-  return (
-    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
-      <ReportsContent {...props} />
-    </Suspense>
+    </>
   );
 }

@@ -1,3 +1,5 @@
+import { LogoutButton } from '@/src/components/command/LogoutButton';
+
 // Color palette
 const COLORS = {
   black: '#020204',
@@ -8,62 +10,65 @@ const COLORS = {
   text: '#ECD7C3',
 };
 
-export default function CommandPage() {
+export default function OverviewPage() {
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: `linear-gradient(135deg, ${COLORS.black} 0%, ${COLORS.darkBg} 100%)`,
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-      }}
-    >
+    <>
+      <LogoutButton />
       <div
         style={{
-          backgroundColor: COLORS.cardBg,
-          border: `1px solid ${COLORS.border}`,
-          padding: '3rem',
-          borderRadius: '0.5rem',
-          textAlign: 'center',
-          maxWidth: '400px',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: `linear-gradient(135deg, ${COLORS.black} 0%, ${COLORS.darkBg} 100%)`,
+          fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
-        <h1
+        <div
           style={{
-            fontSize: '1.5rem',
-            fontWeight: 600,
-            color: COLORS.text,
-            marginBottom: '0.5rem',
-            letterSpacing: '0.025em',
+            backgroundColor: COLORS.cardBg,
+            border: `1px solid ${COLORS.border}`,
+            borderRadius: 12,
+            padding: '3rem',
+            textAlign: 'center',
+            maxWidth: '400px',
           }}
         >
-          Command Center
-        </h1>
+          <h1
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 600,
+              color: COLORS.text,
+              marginBottom: '0.5rem',
+              letterSpacing: '0.025em',
+            }}
+          >
+            Command Center
+          </h1>
 
-        <p
-          style={{
-            fontSize: '1.125rem',
-            color: COLORS.accent,
-            fontWeight: 500,
-            marginBottom: '1rem',
-          }}
-        >
-          Access granted
-        </p>
+          <p
+            style={{
+              fontSize: '1.125rem',
+              color: COLORS.accent,
+              fontWeight: 500,
+              marginBottom: '1rem',
+            }}
+          >
+            Overview
+          </p>
 
-        <p
-          style={{
-            fontSize: '0.875rem',
-            color: COLORS.text,
-            opacity: 0.7,
-          }}
-        >
-          You are inside /command
-        </p>
+          <p
+            style={{
+              fontSize: '0.875rem',
+              color: COLORS.text,
+              opacity: 0.7,
+            }}
+          >
+            Placeholder page – wired correctly
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
