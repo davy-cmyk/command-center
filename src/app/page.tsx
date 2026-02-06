@@ -3,6 +3,16 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+// Color palette
+const COLORS = {
+  black: '#020204',
+  darkBg: '#1B1922',
+  cardBg: '#373033',
+  border: '#4F3D3D',
+  accent: '#E86942',
+  text: '#ECD7C3',
+};
+
 function GateInner() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -48,16 +58,16 @@ function GateInner() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#f9fafb',
+        background: `linear-gradient(135deg, ${COLORS.black} 0%, ${COLORS.darkBg} 100%)`,
         fontFamily: 'system-ui, -apple-system, sans-serif',
       }}
     >
       <div
         style={{
-          backgroundColor: 'white',
+          backgroundColor: COLORS.cardBg,
+          border: `1px solid ${COLORS.border}`,
           padding: '2rem',
           borderRadius: '0.5rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
           width: '100%',
           maxWidth: '360px',
         }}
@@ -67,8 +77,9 @@ function GateInner() {
             fontSize: '1.25rem',
             fontWeight: 600,
             marginBottom: '1.5rem',
-            color: '#111827',
+            color: COLORS.text,
             textAlign: 'center',
+            letterSpacing: '0.025em',
           }}
         >
           Command Center
@@ -82,7 +93,7 @@ function GateInner() {
                 display: 'block',
                 fontSize: '0.875rem',
                 fontWeight: 500,
-                color: '#374151',
+                color: COLORS.text,
                 marginBottom: '0.25rem',
               }}
             >
@@ -97,10 +108,13 @@ function GateInner() {
               style={{
                 width: '100%',
                 padding: '0.5rem 0.75rem',
-                border: '1px solid #d1d5db',
+                backgroundColor: COLORS.black,
+                border: `1px solid ${COLORS.border}`,
                 borderRadius: '0.375rem',
                 fontSize: '0.875rem',
+                color: COLORS.text,
                 boxSizing: 'border-box',
+                outline: 'none',
               }}
               autoFocus
             />
@@ -109,7 +123,7 @@ function GateInner() {
           {error && (
             <div
               style={{
-                color: '#dc2626',
+                color: COLORS.accent,
                 fontSize: '0.875rem',
                 marginBottom: '1rem',
                 textAlign: 'center',
@@ -125,13 +139,23 @@ function GateInner() {
             style={{
               width: '100%',
               padding: '0.5rem 1rem',
-              backgroundColor: isLoading || !password ? '#9ca3af' : '#2563eb',
-              color: 'white',
+              backgroundColor: isLoading || !password ? '#6b4a3a' : COLORS.accent,
+              color: COLORS.black,
               border: 'none',
               borderRadius: '0.375rem',
               fontSize: '0.875rem',
-              fontWeight: 500,
+              fontWeight: 600,
               cursor: isLoading || !password ? 'not-allowed' : 'pointer',
+              transition: 'background-color 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              if (!isLoading && password) {
+                e.currentTarget.style.backgroundColor = '#ff7a4f';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor =
+                isLoading || !password ? '#6b4a3a' : COLORS.accent;
             }}
           >
             {isLoading ? 'Verifying...' : 'Enter'}
